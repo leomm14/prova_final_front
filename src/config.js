@@ -9,4 +9,4 @@ export const AUTH0 = {
 export const ROLES_CLAIM = "https://social-insper.com/roles";
 
 export const API_BASE = "/api";
-export const ENDPOINT = "/tarefas"; // <-- rota do back na prova
+export const ENDPOINT = "/tarefa"; // <-- rota do back na prova
