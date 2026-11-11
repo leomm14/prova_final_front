@@ -9,18 +9,19 @@ export default function App() {
   const { isAuthenticated, isLoading, token } = useSession();
 
   // um estado por campo: texto, inteiro e data
-  const [nome, setNome] = useState("");
-  const [quantidade, setQuantidade] = useState("");
-  const [data, setData] = useState("");
+  const [email, setEmail] = useState("");
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [prioridade, setPrioridade] = useState("");
 
-  const [objetos, setObjetos] = useState([]);
+  const [tarefas, setTarefas] = useState([]);
   const [erro, setErro] = useState("");
 
   const carregar = useCallback(async () => {
     if (!token) return;
     try {
       setErro("");
-      setObjetos((await api(ENDPOINT, { token })) ?? []);
+      setTarefas((await api(ENDPOINT, { token })) ?? []);
     } catch (e) {
       setErro(e.message);
     }
@@ -38,14 +39,16 @@ export default function App() {
         method: "POST",
         token,
         body: {
-          nome, // string
-          quantidade: parseInt(quantidade, 10), // int
-          dataEvento: data + "T00:00:00", // LocalDateTime. Se for LocalDate, use só: data
+          email,
+          titulo, 
+          descricao,
+          prioridade: parseInt(prioridade, 10), // int
         },
       });
-      setNome("");
-      setQuantidade("");
-      setData("");
+      setEmail("");
+      setTitulo("");
+      setDescricao("");
+      setPrioridade("");
       await carregar();
     } catch (e) {
       setErro(e.message);
@@ -67,7 +70,7 @@ export default function App() {
   if (!isAuthenticated) {
     return (
       <div className="box">
-        <h1>Objeto</h1>
+        <h1>Tarefas</h1>
         <button onClick={() => loginWithRedirect()}>Entrar</button>
       </div>
     );
@@ -75,20 +78,21 @@ export default function App() {
 
   return (
     <div className="box">
-      <h1>Objeto</h1>
+      <h1>Tarefas</h1>
       <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Sair</button>
 
       <form onSubmit={enviar}>
-        <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" required />
-        <input type="number" step="1" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} placeholder="número inteiro" required />
-        <input type="date" value={data} onChange={(e) => setData(e.target.value)} required />
+        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" required />
+        <input value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="titulo" required />
+        <input value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder="descricao" required />
+        <input type="number" step="1" value={prioridade} onChange={(e) => setPrioridade(e.target.value)} placeholder="prioridade" required />
         <button type="submit">Enviar</button>
       </form>
 
       {erro && <p className="erro">{erro}</p>}
 
       <ul>
-        {objetos.map((o) => (
+        {tarefas.map((o) => (
           <li key={o.id}>
             {o.nome} <button onClick={() => apagar(o.id)}>Apagar</button>
           </li>
