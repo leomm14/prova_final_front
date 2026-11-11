@@ -8,7 +8,7 @@ export default function App() {
   const { loginWithRedirect, logout } = useAuth0();
   const { isAuthenticated, isLoading, token } = useSession();
 
-  // um estado por campo: texto, número e data
+  // um estado por campo: texto, inteiro e data
   const [nome, setNome] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [data, setData] = useState("");
@@ -39,7 +39,7 @@ export default function App() {
         token,
         body: {
           nome, // string
-          quantidade: Number(quantidade), // número
+          quantidade: parseInt(quantidade, 10), // int
           dataEvento: data + "T00:00:00", // LocalDateTime. Se for LocalDate, use só: data
         },
       });
@@ -57,6 +57,7 @@ export default function App() {
   if (!isAuthenticated) {
     return (
       <div className="box">
+        <h1>Objeto</h1>
         <button onClick={() => loginWithRedirect()}>Entrar</button>
       </div>
     );
@@ -64,11 +65,12 @@ export default function App() {
 
   return (
     <div className="box">
+      <h1>Objeto</h1>
       <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Sair</button>
 
       <form onSubmit={enviar}>
         <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" required />
-        <input type="number" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} placeholder="quantidade" required />
+        <input type="number" step="1" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} placeholder="número inteiro" required />
         <input type="date" value={data} onChange={(e) => setData(e.target.value)} required />
         <button type="submit">Enviar</button>
       </form>
@@ -77,9 +79,7 @@ export default function App() {
 
       <ul>
         {objetos.map((o) => (
-          <li key={o.id}>
-            {o.nome} — {o.quantidade} — {o.dataEvento ? new Date(o.dataEvento).toLocaleDateString("pt-BR") : "sem data"}
-          </li>
+          <li key={o.id}>{o.nome}</li>
         ))}
       </ul>
     </div>

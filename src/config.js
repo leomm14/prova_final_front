@@ -1,4 +1,4 @@
-
+// Tudo que muda na prova está aqui.
 
 export const AUTH0 = {
   domain: import.meta.env.VITE_AUTH0_DOMAIN || "dev-vlbhbshl7b1pxe8e.us.auth0.com",
