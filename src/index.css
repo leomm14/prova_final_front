@@ -5,3 +5,4 @@ form { display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
 input { padding: .5rem; }
 button { padding: .5rem 1rem; cursor: pointer; }
 .erro { color: #b91c1c; }
+li { margin: .5rem 0; }

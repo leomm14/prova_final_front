@@ -52,6 +52,16 @@ export default function App() {
     }
   };
 
+  const apagar = async (id) => {
+    try {
+      setErro("");
+      await api(`${ENDPOINT}/${id}`, { method: "DELETE", token });
+      await carregar();
+    } catch (e) {
+      setErro(e.message);
+    }
+  };
+
   if (isLoading) return <p>Carregando...</p>;
 
   if (!isAuthenticated) {
@@ -79,7 +89,9 @@ export default function App() {
 
       <ul>
         {objetos.map((o) => (
-          <li key={o.id}>{o.nome}</li>
+          <li key={o.id}>
+            {o.nome} <button onClick={() => apagar(o.id)}>Apagar</button>
+          </li>
         ))}
       </ul>
     </div>
