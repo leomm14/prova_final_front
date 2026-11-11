@@ -94,7 +94,7 @@ export default function App() {
       <ul>
         {tarefas.map((o) => (
           <li key={o.id}>
-            {o.nome} <button onClick={() => apagar(o.id)}>Apagar</button>
+            {o.titulo} <button onClick={() => apagar(o.id)}>Apagar</button>
           </li>
         ))}
       </ul>
